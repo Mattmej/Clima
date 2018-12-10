@@ -85,12 +85,19 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     func updateWeatherData(json: JSON) {
         
         // We are using SwiftyJSON to access this value.
-        let tempResult = json["main"]["temp"].double
+        // Optional binding.
+        if let tempResult = json["main"]["temp"].double {
         
-        weatherDataModel.temperature = Int(tempResult! - 273.15)
-        weatherDataModel.city = json["name"].stringValue
-        weatherDataModel.condition = json["weather"][1]["id"].intValue
-        weatherDataModel.weatherIconName = weatherDataModel.updateWeatherIcon(condition: weatherDataModel.condition)
+            weatherDataModel.temperature = Int(tempResult - 273.15)
+            weatherDataModel.city = json["name"].stringValue
+            weatherDataModel.condition = json["weather"][1]["id"].intValue
+            weatherDataModel.weatherIconName = weatherDataModel.updateWeatherIcon(condition: weatherDataModel.condition)
+        }
+        
+        else {
+            cityLabel.text = "Weather Unavailable."
+        }
+        
     }
     
 
